@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">KPIschedule</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello</string>
+    <string name="action_refresh">Refreeesh</string>
+
+    <string name="number_of_lesson">№</string>
+    <string name="room">#</string>
+    <string name="name_of_subject"></string>
+    <string name="enter_the_group">Введіть групу : </string>
+    <string name="search">Пошук</string>
+
+    <!--- <Material Android/> -->
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_friends">Friends</string>
+    <string name="nav_item_notifications">Messages</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_friends</item>
+        <item>@string/nav_item_notifications</item>
+    </string-array>
+
+    <string name="title_messages">Messages</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_home">Home</string>
+
+    <string name="mon">ПН</string>
+    <string name="tue">ВТ</string>
+    <string name="wed">СР</string>
+    <string name="thu">ЧТ</string>
+    <string name="fri">ПТ</string>
+    <string name="sat">СБ</string>
+    <string name="sun">НД</string>
+
+    <string name="loading_message">чекай</string>
+
+
+
+
+
+
+
+
+
+
+</resources>

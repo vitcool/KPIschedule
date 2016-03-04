@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+
+                android:padding="6dip">
+    <!-- Item Name -->
+
+    <!-- Actual Item Name Data -->
+
+    <!-- Price Tag -->
+
+    <!-- Actual Price Data -->
+
+    <!-- Description Tag -->
+    <!-- This is the actual description -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/number_of_lesson_value"
+
+                android:layout_width="wrap_content"
+                android:layout_height="26dip"
+
+                android:layout_alignParentRight="true"
+
+                android:gravity="center_vertical"
+                />
+
+            <TextView
+                android:id="@+id/name_of_subject_value"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/teacher_name_value"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/lesson_type_value"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+
+                android:id="@+id/room_value"
+                android:singleLine="false"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
+
