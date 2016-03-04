@@ -24,41 +24,38 @@
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"/>
         </LinearLayout>
 
         <FrameLayout
             android:id="@+id/container_body"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1" >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"/>
+
+
+        </FrameLayout>
 
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <fragment
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:name="com.example.vitalykulyk.kpischedule.ScheduleFragment"
-            android:id="@+id/schedule_fragment"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="100dp"/>
-
-    </LinearLayout>
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
-        android:layout_width="match_parent"
+    <fragment
+        android:id="@+id/fragment_navigation_drawer"
+        android:name="com.example.vitalykulyk.kpischedule.FragmentDrawer"
+        android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"/>
+        android:layout_gravity="start"
+        android:layout="@layout/fragment_navigation_drawer"
+        tools:layout="@layout/fragment_navigation_drawer" />
+
 
 </android.support.v4.widget.DrawerLayout>

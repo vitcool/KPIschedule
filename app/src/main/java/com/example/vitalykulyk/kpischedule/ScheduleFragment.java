@@ -66,6 +66,7 @@ public class ScheduleFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
+        Log.w("NEW INSTANCE", "SHEDULE FRAGMENT");
         return fragment;
     }
 
@@ -76,6 +77,7 @@ public class ScheduleFragment extends Fragment {
         mListView = (ListView) view.findViewById(R.id.listview_forecast);
         ArrayList<Lesson> testSchedule = new ArrayList<>();
         mLessonAdapter = new ScheduleTask.LessonAdapter(getActivity(), R.layout.list_item, testSchedule);
+
         ///setListViewthere
         return view;
     }
@@ -84,7 +86,9 @@ public class ScheduleFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ScheduleTask task = new ScheduleTask();
-        task.execute("ІО-32", "1");//!!!!!!!!!!!!!!!
+        Bundle bundle = getArguments();
+        task.execute("ІО-32", Integer.toString(bundle.getInt(ARG_SECTION_NUMBER)));
+        Log.w("ON RESUME", "SHEDULE FRAGMENT");
     }
 
 
@@ -103,22 +107,6 @@ public class ScheduleFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
-
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-//
-//        ArrayList<Lesson> testSchedule = new ArrayList<>();
-//
-//        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
-//
-//        mLessonAdapter = new ScheduleTask.LessonAdapter(getActivity(), R.layout.list_item, testSchedule);
-//
-//        return rootView;
-//    }
-
 
     public static class ScheduleTask extends AsyncTask<String, Void, Lesson[]> {
 
@@ -155,9 +143,33 @@ public class ScheduleFragment extends Fragment {
                     secondWeekSchedule.add(day);
                 }
             }
-            int dayz = 0;/// !!!!!!!!!!!!!!!!!
-            Lesson[] array = firstWeekSchedule.get(dayz).toArray(new Lesson[firstWeekSchedule.get(dayz).size()]);
-            return array;
+            int daysInt = dayToInt(days);
+            try {
+                Lesson[] array = firstWeekSchedule.get(daysInt).toArray(new Lesson[firstWeekSchedule.get(daysInt).size()]);
+                return array;
+            }
+            catch (Exception e){
+                Log.w("getScheduleDataFromJson", e.getMessage());
+                return null;
+            }
+        }
+
+        int dayToInt(String days){
+            switch (days){
+                case "2":{
+                    return 0;
+                }
+                case "3":{
+                    return 1;
+                }
+                case "4":{
+                    return 2;
+                }
+                case "5":{
+                    return 3;
+                }
+            }
+            return 5;
         }
 
         @Override
@@ -235,13 +247,18 @@ public class ScheduleFragment extends Fragment {
                         reader.close();
                     } catch (final IOException e) {
                         Log.e("PlaceholderFragment", "Error closing stream", e);
+                        e.printStackTrace();
                     }
                 }
             }
             try {
                 return getScheduleDataFromJson(scheduleJsonStr, params[1]);
             } catch (JSONException e) {
-                Log.e(LOG_CAT, e.getMessage(), e);
+                Log.w(LOG_CAT, e.getMessage(), e);
+                e.printStackTrace();
+            }
+            catch (Exception e){
+                Log.w("EXECUTE ERROR", e.getMessage(), e);
                 e.printStackTrace();
             }
             // This will only happen if there was an error getting or parsing the forecast.

@@ -21,17 +21,17 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 
-public class MainActivity extends AppCompatActivity {//implements FragmentDrawer.FragmentDrawerListener {
+public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private Toolbar mToolbar;
     private FragmentDrawer mDrawerFragment;
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
+    //private ViewPager mViewPager;
+    //private TabLayout mTabLayout;
 
     String day;
     EditText search_query;
-    android.app.FragmentTransaction mFragmentTransaction;
-    android.app.FragmentManager mFragmentManager;
+    //android.app.FragmentTransaction mFragmentTransaction;
+    //android.app.FragmentManager mFragmentManager;
     boolean isPressed = false;
     boolean isPressedSearch = false;
 
@@ -43,14 +43,14 @@ public class MainActivity extends AppCompatActivity {//implements FragmentDrawer
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
         search_query = (EditText) findViewById(R.id.editText);
@@ -102,30 +102,31 @@ public class MainActivity extends AppCompatActivity {//implements FragmentDrawer
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onDrawerItemSelected(View view, int position) {
-//        displayView(position);
-//    }
+    @Override
+    public void onDrawerItemSelected(View view, int position) {
+        displayView(position);
+    }
 
-//    private void displayView(int position) {
-//        ScheduleFragment fragment = new ScheduleFragment();
-//        String title = getString(R.string.app_name);
-//        switch (position) {
-//            case 0:
-//                fragment = new ScheduleFragment();
-//                title = getString(R.string.title_home);
-//                break;
-//            case 1:
-//                fragment = new ScheduleFragment();
-//                title = getString(R.string.title_friends);
-//                break;
-//            case 2:
-//                fragment = new ScheduleFragment();
-//                title = getString(R.string.title_messages);
-//                break;
-//            default:
-//                break;
-//        }
+    private void displayView(int position) {
+        ScheduleFragment fragment = new ScheduleFragment();
+        String title = getString(R.string.app_name);
+        switch (position) {
+            case 0:
+                fragment = new ScheduleFragment();
+                title = getString(R.string.title_home);
+                break;
+            case 1:
+                fragment = new ScheduleFragment();
+                title = getString(R.string.title_friends);
+                break;
+            case 2:
+                fragment = new ScheduleFragment();
+                title = getString(R.string.title_messages);
+                break;
+            default:
+                break;
+        }
+    }
 
 //        if (fragment != null) {
 //            FragmentManager fragmentManager = getSupportFragmentManager();
@@ -143,7 +144,6 @@ public class MainActivity extends AppCompatActivity {//implements FragmentDrawer
         public SectionsPagerAdapter(FragmentManager manager) {
             super(manager);
         }
-
 
         @Override
         public Fragment getItem(int position) {
