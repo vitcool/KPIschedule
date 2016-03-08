@@ -1,6 +1,8 @@
 package com.example.vitalykulyk.kpischedule;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,16 +10,26 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -25,6 +37,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     private Toolbar mToolbar;
     private FragmentDrawer mDrawerFragment;
+    private SearchView mSearchView;
+    private MenuItem searchMenuItem;
+
+// toolbar for MaterialSEarch
+    private MenuItem mSearchAction;
+    private boolean isSearchOpened = false;
+    private EditText editSearch;
     //private ViewPager mViewPager;
     //private TabLayout mTabLayout;
 
@@ -53,53 +72,125 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        search_query = (EditText) findViewById(R.id.editText);
-        search_query.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isPressedSearch == false) {
-                    search_query.setText("");
-                }
-                isPressedSearch = true;
-            }
-        });
+//        editSearch = (EditText) findViewById(R.id.editSearch);
+//        editSearch.setText("ІО-32");
+//        editSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isPressedSearch == false) {
+//                    search_query.setText("");
+//                }
+//                isPressedSearch = true;
+//            }
+//        });
+
+
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mSearchAction = menu.findItem(R.id.action_search);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        searchMenuItem = menu.findItem(R.id.action_search);
+
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            return false;
         }
 
-//        if (id == R.id.action_search){
-//            ScheduleFragment.ScheduleTask scheduleTask = new ScheduleFragment.ScheduleTask();
-//            String query = String.valueOf(search_query.getText());
-//            scheduleTask.execute(query, day);
-//            if (!isPressed) {
-//                mFragmentTransaction = mFragmentManager.beginTransaction();
-//                if (id == R.id.action_search) {
-////                    ScheduleFragment schFragment = new ScheduleFragment();
-////                    mFragmentTransaction.add(R.id.schedule_fragment, schFragment);
-////                    mFragmentTransaction.commit();
-//                }
-//                isPressed = true;
-//            }
-//        }
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            // newText is text entered by user to SearchView
+            Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_LONG).show();
+            return false;
+        }
+    };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_search:
+                handleMenuSearch();
+                return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void handleMenuSearch(){
+        ActionBar action = getSupportActionBar(); //get the actionbar
+
+        if(isSearchOpened){ //test if the search is open
+
+            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
+            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
+
+            //hides the keyboard
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+
+            //add the search icon in the action bar
+            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_open_search));
+
+            isSearchOpened = false;
+        } else { //open the search entry
+
+            action.setDisplayShowCustomEnabled(true); //enable it to display a
+            // custom view in the action bar.
+            action.setCustomView(R.layout.search_bar);//add the custom view
+            action.setDisplayShowTitleEnabled(false); //hide the title
+
+            editSearch = (EditText)action.getCustomView().findViewById(R.id.editSearch); //the text editor
+
+            //this is a listener to do a search when the user clicks on search button
+            editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        doSearch();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+
+            editSearch.requestFocus();
+
+            //open the keyboard focused in the edtSearch
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editSearch, InputMethodManager.SHOW_IMPLICIT);
+
+
+            //add the close icon
+            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_close_search));
+
+            isSearchOpened = true;
+        }
+    }
+
+    private void doSearch() {
+        //
     }
 
     @Override
@@ -147,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         @Override
         public Fragment getItem(int position) {
-            return ScheduleFragment.newInstance(position + 1);
+            return ScheduleFragment.newInstance(position + 1, "IO-32");
         }
 
         @Override

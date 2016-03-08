@@ -46,6 +46,7 @@ import java.util.Objects;
  */
 public class ScheduleFragment extends Fragment {
 
+
     //Array adapter for
     ArrayAdapter<Lesson> mScheduleAdapter;
 
@@ -54,6 +55,7 @@ public class ScheduleFragment extends Fragment {
     List<Lesson> testSchedule;
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_QUERY = "query";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     static ScheduleTask.LessonAdapter mLessonAdapter;
@@ -61,10 +63,11 @@ public class ScheduleFragment extends Fragment {
     public ScheduleFragment() {
     }
 
-    public static ScheduleFragment newInstance(int sectionNumber) {
+    public static ScheduleFragment newInstance(int sectionNumber, String query) {
         ScheduleFragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putString(ARG_QUERY, query);
         fragment.setArguments(args);
         Log.w("NEW INSTANCE", "SHEDULE FRAGMENT");
         return fragment;
@@ -87,7 +90,7 @@ public class ScheduleFragment extends Fragment {
         super.onResume();
         ScheduleTask task = new ScheduleTask();
         Bundle bundle = getArguments();
-        task.execute("ІО-32", Integer.toString(bundle.getInt(ARG_SECTION_NUMBER)));
+        task.execute(getArguments().getString(ARG_QUERY), Integer.toString(bundle.getInt(ARG_SECTION_NUMBER)));
         Log.w("ON RESUME", "SHEDULE FRAGMENT");
     }
 
