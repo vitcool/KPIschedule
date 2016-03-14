@@ -1,6 +1,7 @@
 package com.example.vitalykulyk.kpischedule;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
@@ -49,10 +50,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private boolean isSearchOpened = false;
     private boolean search = false;
     private EditText editSearch;
-    String day;
-    EditText search_query;
-    boolean isPressed = false;
-    boolean isPressedSearch = false;
+    private FragmentDrawer drawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -78,6 +77,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         Log.w("DAY IS", "" + day);
         // set default tab to view
         mViewPager.setCurrentItem(day, false);
+
+        drawerFragment = (FragmentDrawer)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+        drawerFragment.setDrawerListener(this);
     }
 
     @Override
@@ -188,23 +192,34 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void displayView(int position) {
-        ScheduleFragment fragment = new ScheduleFragment();
+        Fragment fragment = null;
+        Intent intent;
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new ScheduleFragment();
-                title = getString(R.string.title_home);
+                intent = new Intent(MainActivity.this, TestActivity.class);
+                startActivity(intent);
                 break;
             case 1:
-                fragment = new ScheduleFragment();
-                title = getString(R.string.title_friends);
+                intent = new Intent(MainActivity.this, TestActivity.class);
+                startActivity(intent);
                 break;
             case 2:
-                fragment = new ScheduleFragment();
-                title = getString(R.string.title_messages);
+                intent = new Intent(MainActivity.this, TestActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.commit();
+
+            // set the toolbar title
+            getSupportActionBar().setTitle(title);
         }
     }
 
