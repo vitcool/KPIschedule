@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
@@ -68,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        Calendar newCal = new GregorianCalendar();
+        newCal.setTime(newCal.getTime());
+        int day = newCal.get(Calendar.DAY_OF_WEEK)-2;
+        Log.w("DAY IS", "" + day);
+        // set default tab to view
+        mViewPager.setCurrentItem(day, false);
     }
 
     @Override
@@ -168,12 +177,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void doSearch() {
-//        getSupportFragmentManager().beginTransaction().
-//                remove(getSupportFragmentManager().findFragmentById(R.id.fragment_main)).commit();
-//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(R.layout.fragment_main);
-//        if(fragment != null){
-//            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-//        }
 
 
     }

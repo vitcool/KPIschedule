@@ -98,10 +98,6 @@ public class ScheduleFragment extends Fragment {
         Bundle bundle = getArguments();
         task.execute(getArguments().getString(ARG_QUERY), Integer.toString(bundle.getInt(ARG_SECTION_NUMBER)));
         Log.w("ON RESUME", "SHEDULE FRAGMENT");
-//        if (isSearchq){
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//            ft.detach(this).attach(this).commit();
-//        }
     }
 
 
