@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         Calendar newCal = new GregorianCalendar();
         newCal.setTime(newCal.getTime());
+        // get curtrent day to default show when app just opens
         int day = newCal.get(Calendar.DAY_OF_WEEK)-2;
         Log.w("DAY IS", "" + day);
         // set default tab to view

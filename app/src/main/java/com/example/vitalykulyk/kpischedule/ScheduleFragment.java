@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -160,7 +161,20 @@ public class ScheduleFragment extends Fragment {
                     daysInweek = 4;
                 }
                 int daysInt = dayToInt(days, daysInweek, startDay);
-                Lesson[] array = firstWeekSchedule.get(daysInt).toArray(new Lesson[firstWeekSchedule.get(daysInt).size()]);
+                Lesson[] array;
+
+                Calendar cal1 = Calendar.getInstance();
+                cal1.setFirstDayOfWeek(Calendar.MONDAY);
+                cal1.setMinimalDaysInFirstWeek(1);
+                int weekInYear = cal1.get(Calendar.WEEK_OF_MONTH);
+                boolean pairWeek = (weekInYear % 2 == 0);
+                if (!pairWeek){
+                    array = firstWeekSchedule.get(daysInt).toArray(new Lesson[firstWeekSchedule.get(daysInt).size()]);
+                }
+                else {
+                    array = secondWeekSchedule.get(daysInt).toArray(new Lesson[firstWeekSchedule.get(daysInt).size()]);
+                }
+
                 return array;
             }
             catch (Exception e){
