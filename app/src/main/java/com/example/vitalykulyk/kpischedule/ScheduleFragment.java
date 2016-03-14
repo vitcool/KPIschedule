@@ -173,9 +173,10 @@ public class ScheduleFragment extends Fragment {
             }
         }
 
+
         int dayToInt(String days, int daysInWeek, String startDay){
             if (daysInWeek == 4) {
-                if (startDay == "Вівторок") {
+                if (startDay.equals("2")) {
                     switch (days) {
                         case "2": {
                             return 0;
