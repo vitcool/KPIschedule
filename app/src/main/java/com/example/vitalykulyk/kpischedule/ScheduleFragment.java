@@ -157,13 +157,13 @@ public class ScheduleFragment extends Fragment {
                 }
             }
             int daysInweek = 5;
-            String nameOfFirstDay;
+            String startDay;
             try {
-                nameOfFirstDay = firstWeekSchedule.get(0).get(0).getDay_number();
+                startDay = firstWeekSchedule.get(0).get(0).getDay_number();
                 if (firstWeekSchedule.size() == 4){
                     daysInweek = 4;
                 }
-                int daysInt = dayToInt(days, daysInweek);
+                int daysInt = dayToInt(days, daysInweek, startDay);
                 Lesson[] array = firstWeekSchedule.get(daysInt).toArray(new Lesson[firstWeekSchedule.get(daysInt).size()]);
                 return array;
             }
@@ -173,20 +173,37 @@ public class ScheduleFragment extends Fragment {
             }
         }
 
-        int dayToInt(String days, int daysInWeek){
-            if (daysInWeek == 4){
-                switch (days) {
-                    case "2": {
-                        return 0;
+        int dayToInt(String days, int daysInWeek, String startDay){
+            if (daysInWeek == 4) {
+                if (startDay == "Вівторок") {
+                    switch (days) {
+                        case "2": {
+                            return 0;
+                        }
+                        case "3": {
+                            return 1;
+                        }
+                        case "4": {
+                            return 2;
+                        }
+                        case "5": {
+                            return 3;
+                        }
                     }
-                    case "3": {
-                        return 1;
-                    }
-                    case "4": {
-                        return 2;
-                    }
-                    case "5": {
-                        return 3;
+                } else {
+                    switch (days) {
+                        case "1": {
+                            return 0;
+                        }
+                        case "2": {
+                            return 1;
+                        }
+                        case "3": {
+                            return 2;
+                        }
+                        case "4": {
+                            return 3;
+                        }
                     }
                 }
             }
