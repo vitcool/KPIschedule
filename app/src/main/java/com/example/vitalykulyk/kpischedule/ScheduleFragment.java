@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,18 +59,25 @@ public class ScheduleFragment extends Fragment {
     private static final String ARG_QUERY = "query";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    public static Bundle[] bundleArray;
+    public static ScheduleFragment[] fragmentArray;
+
+
     static ScheduleTask.LessonAdapter mLessonAdapter;
+
+    static boolean isSearchq;
 
     public ScheduleFragment() {
     }
 
-    public static ScheduleFragment newInstance(int sectionNumber, String query) {
+    public static ScheduleFragment newInstance(int sectionNumber, String query, boolean isSearch) {
         ScheduleFragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         args.putString(ARG_QUERY, query);
         fragment.setArguments(args);
-        Log.w("NEW INSTANCE", "SHEDULE FRAGMENT");
+        Log.w("NEW INSTANCE FRAGMENT", query.toUpperCase());
+        isSearchq = isSearch;
         return fragment;
     }
 
@@ -80,8 +88,6 @@ public class ScheduleFragment extends Fragment {
         mListView = (ListView) view.findViewById(R.id.listview_forecast);
         ArrayList<Lesson> testSchedule = new ArrayList<>();
         mLessonAdapter = new ScheduleTask.LessonAdapter(getActivity(), R.layout.list_item, testSchedule);
-
-        ///setListViewthere
         return view;
     }
 
@@ -92,6 +98,10 @@ public class ScheduleFragment extends Fragment {
         Bundle bundle = getArguments();
         task.execute(getArguments().getString(ARG_QUERY), Integer.toString(bundle.getInt(ARG_SECTION_NUMBER)));
         Log.w("ON RESUME", "SHEDULE FRAGMENT");
+//        if (isSearchq){
+//            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//            ft.detach(this).attach(this).commit();
+//        }
     }
 
 
@@ -146,8 +156,14 @@ public class ScheduleFragment extends Fragment {
                     secondWeekSchedule.add(day);
                 }
             }
-            int daysInt = dayToInt(days);
+            int daysInweek = 5;
+            String nameOfFirstDay;
             try {
+                nameOfFirstDay = firstWeekSchedule.get(0).get(0).getDay_number();
+                if (firstWeekSchedule.size() == 4){
+                    daysInweek = 4;
+                }
+                int daysInt = dayToInt(days, daysInweek);
                 Lesson[] array = firstWeekSchedule.get(daysInt).toArray(new Lesson[firstWeekSchedule.get(daysInt).size()]);
                 return array;
             }
@@ -157,19 +173,40 @@ public class ScheduleFragment extends Fragment {
             }
         }
 
-        int dayToInt(String days){
-            switch (days){
-                case "2":{
-                    return 0;
+        int dayToInt(String days, int daysInWeek){
+            if (daysInWeek == 4){
+                switch (days) {
+                    case "2": {
+                        return 0;
+                    }
+                    case "3": {
+                        return 1;
+                    }
+                    case "4": {
+                        return 2;
+                    }
+                    case "5": {
+                        return 3;
+                    }
                 }
-                case "3":{
-                    return 1;
-                }
-                case "4":{
-                    return 2;
-                }
-                case "5":{
-                    return 3;
+            }
+            else {
+                switch (days) {
+                    case "1": {
+                        return 0;
+                    }
+                    case "2": {
+                        return 1;
+                    }
+                    case "3": {
+                        return 2;
+                    }
+                    case "4": {
+                        return 3;
+                    }
+                    case "5": {
+                        return 4;
+                    }
                 }
             }
             return 5;

@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,26 +45,21 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 // toolbar for MaterialSEarch
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
+    private boolean search = false;
     private EditText editSearch;
-    //private ViewPager mViewPager;
-    //private TabLayout mTabLayout;
-
     String day;
     EditText search_query;
-    //android.app.FragmentTransaction mFragmentTransaction;
-    //android.app.FragmentManager mFragmentManager;
     boolean isPressed = false;
     boolean isPressedSearch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        search = false;
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -71,20 +68,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-
-//        editSearch = (EditText) findViewById(R.id.editSearch);
-//        editSearch.setText("ІО-32");
-//        editSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (isPressedSearch == false) {
-//                    search_query.setText("");
-//                }
-//                isPressedSearch = true;
-//            }
-//        });
-
-
     }
 
     @Override
@@ -93,12 +76,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         return super.onPrepareOptionsMenu(menu);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -168,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         doSearch();
+                        search = true;
                         return true;
                     }
                     return false;
@@ -190,7 +168,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void doSearch() {
-        //
+//        getSupportFragmentManager().beginTransaction().
+//                remove(getSupportFragmentManager().findFragmentById(R.id.fragment_main)).commit();
+//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(R.layout.fragment_main);
+//        if(fragment != null){
+//            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+//        }
+
+
     }
 
     @Override
@@ -219,18 +204,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         }
     }
 
-//        if (fragment != null) {
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            //fragmentTransaction.replace(R.id.container_body, fragment);
-//            fragmentTransaction.commit();
-//
-//            // set the toolbar title
-//            getSupportActionBar().setTitle(title);
-//        }
-
-
-    class SectionsPagerAdapter extends FragmentPagerAdapter {
+    class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -238,7 +212,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         @Override
         public Fragment getItem(int position) {
-            return ScheduleFragment.newInstance(position + 1, "IO-32");
+            if (!search){
+                return ScheduleFragment.newInstance(position + 1, "IO-32", false);
+            }
+            else
+            {
+                return ScheduleFragment.newInstance(position + 1, editSearch.getText().toString(), true);
+            }
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override
